@@ -1,22 +1,30 @@
-import React from 'react';
+import React, { useContext, useEffect } from "react";
 
-import Proyect from './Proyect'
+import Proyect from "./Proyect";
+
+import proyectContext from "../../context/proyects/proyectContext";
 
 const ProyectsList = () => {
 
-    const proyectos = [
-        {nombre: "Tienda"},
-        {nombre: "Coche"},
-        {nombre: "Seguro"}
-    ];
+  //Obtener proyectos
+  const proyectsContext = useContext(proyectContext);
+  const { proyects, getProyects } = proyectsContext;
 
-    return ( 
-        <ul className="listado-proyectos">
-            {proyectos.map(proyecto => (
-                <Proyect proyecto={proyecto} />
-            ))}
-        </ul>
-     );
-}
- 
+  //useEffect siempre antes de cualquier return
+  useEffect(() => {
+    getProyects();
+  }, []);
+
+  //Revisar si proyectos tiene contenido
+  if(proyects.length === 0) return null;
+
+  return (
+    <ul className="listado-proyectos">
+      {proyects.map(proyecto => (
+        <Proyect key={proyecto.id} proyecto={proyecto} />
+      ))}
+    </ul>
+  );
+};
+
 export default ProyectsList;
